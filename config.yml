@@ -1,0 +1,7 @@
+dnsAuth:
+  appId: <app key>
+  appSecret: <app secret>
+records:
+  - domain: <your top domain>
+    rr:
+    - <subdomain's prefix>
