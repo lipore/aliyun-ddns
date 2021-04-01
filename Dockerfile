@@ -7,7 +7,7 @@ RUN GOPROXY=https://goproxy.cn,direct go build && ls -al
 
 FROM alpine:3.12
 
-WORKDIR /opt/aliyun-dns
+WORKDIR /opt/aliyun-ddns
 COPY --from=builder /opt/src/aliyun-ddns .
 
-CMD [ "/opt/aliyun-dns/aliyun-ddns" ]
+CMD [ "/opt/aliyun-ddns/aliyun-ddns" ]
