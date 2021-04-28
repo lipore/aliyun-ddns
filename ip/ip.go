@@ -1,6 +1,7 @@
 package ip
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,6 +13,9 @@ func GetIp() (IP, error) {
 	res, err := http.Get("https://api.ipify.org")
 	if err != nil {
 		return "", err
+	}
+	if res.StatusCode != 200 {
+		return "", fmt.Errorf("get ip error, status code: %d", res.StatusCode)
 	}
 	ip, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -25,6 +29,9 @@ func GetIp6() (IP, error) {
 	res, err := http.Get("https://api64.ipify.org")
 	if err != nil {
 		return "", err
+	}
+	if res.StatusCode != 200 {
+		return "", fmt.Errorf("get ip error, status code: %d", res.StatusCode)
 	}
 	ip, err := ioutil.ReadAll(res.Body)
 	if err != nil {
