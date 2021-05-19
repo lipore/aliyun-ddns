@@ -5,38 +5,49 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
-type IP string
+type IP struct {
+	V4, V6 string
+}
 
-func GetIp() (IP, error) {
-	res, err := http.Get("https://api.ipify.org")
-	if err != nil {
-		return "", err
-	}
-	if res.StatusCode != 200 {
-		return "", fmt.Errorf("get ip error, status code: %d", res.StatusCode)
+func getIp(endpoint string) (string, error) {
+	retryInterval := 30 * time.Second
+	retryTimes := 0
+	var res *http.Response
+	for {
+		if retryTimes > 5 {
+			return "", fmt.Errorf("max retry time rearched")
+		}
+		var err error
+		res, err = http.Get(endpoint)
+		if err != nil || res.StatusCode != 200 {
+			time.Sleep(retryInterval)
+			retryTimes++
+			continue
+		}
+		break
 	}
 	ip, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return "", err
 	}
 	log.Printf("get ip: %s", ip)
-	return IP(string(ip)), nil
+	return string(ip), nil
 }
 
-func GetIp6() (IP, error) {
-	res, err := http.Get("https://api64.ipify.org")
+func GetIp() (*IP, error) {
+	var finalErr error = nil
+	ipv4, err := getIp("https://api.ipify.org")
 	if err != nil {
-		return "", err
+		ipv4 = ""
+		finalErr = err
 	}
-	if res.StatusCode != 200 {
-		return "", fmt.Errorf("get ip error, status code: %d", res.StatusCode)
-	}
-	ip, err := ioutil.ReadAll(res.Body)
+	ipv6, err := getIp("https://api64.ipify.org")
 	if err != nil {
-		return "", err
+		ipv6 = ""
+		finalErr = err
 	}
-	log.Printf("get ipv6: %s", ip)
-	return IP(string(ip)), nil
+	return &IP{V4: ipv4, V6: ipv6}, finalErr
 }

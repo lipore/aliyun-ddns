@@ -5,3 +5,4 @@ records:
   - domain: <your top domain>
     rr:
     - <subdomain's prefix>
+disableLoop: false

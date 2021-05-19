@@ -8,13 +8,15 @@ import (
 )
 
 type Configuration struct {
-	DNSAuth dnsAuth  `yaml:"dnsAuth"`
-	Records []record `yaml:"records"`
+	DNSAuth     dnsAuth  `yaml:"dnsAuth"`
+	Records     []record `yaml:"records"`
+	DisableLoop bool     `yaml:"disableLoop"`
 }
 
 type record struct {
 	Domain string   `yaml:"domain"`
 	RR     []string `yaml:"rr"`
+	RRv6   []string `yaml:"rrv6"`
 }
 type dnsAuth struct {
 	AppId     string `yaml:"appId"`
