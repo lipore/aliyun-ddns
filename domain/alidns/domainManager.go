@@ -47,6 +47,10 @@ func (dm *AlidnsDomainManager) AddDomain(rr, domain, domainType string, ipaddr *
 	if err != nil {
 		log.Print(err)
 	}
+	err = ad.Update(ipaddr)
+	if err != nil {
+		log.Print(err.Error())
+	}
 	dm.domains = append(dm.domains, ad)
 }
 

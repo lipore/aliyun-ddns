@@ -50,6 +50,7 @@ func (ad *AlidnsDomain) Update(ip *ip.IP) error {
 
 func (ad *AlidnsDomain) updateDomainValue(ipvalue string, client *alidns20150109.Client) error {
 	retryInterval := 60 * time.Second
+	retryTimes := 0
 	for {
 		updateDomainRecordRequest := &alidns20150109.UpdateDomainRecordRequest{
 			RR:       tea.String(ad.rr),
@@ -64,6 +65,11 @@ func (ad *AlidnsDomain) updateDomainValue(ipvalue string, client *alidns20150109
 			time.Sleep(retryInterval)
 			log.Printf("retry\n")
 			retryInterval *= 2
+			retryTimes++
+			if retryTimes > 5 {
+				log.Printf("Maximum number(%d) of retries reached ", retryTimes)
+				break
+			}
 			continue
 		}
 		log.Printf("updated domain %s.%s to %s\n", ad.rr, ad.domain, ipvalue)
