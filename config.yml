@@ -1,8 +1,8 @@
 dnsAuth:
-  appId: <app key>
-  appSecret: <app secret>
+  appId: LTAI5tFGdRFNqGpd6MgQZUru
+  appSecret: 7rF0cgVX4uJB5ooFon36klXEr3lIIE
 records:
-  - domain: <your top domain>
+  - domain: candyhouse.top
     rr:
-    - <subdomain's prefix>
-disableLoop: false
+      - edge-cz
+disableLoop: true

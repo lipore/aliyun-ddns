@@ -11,10 +11,9 @@ import (
 )
 
 func main() {
-	c := config.LoadConfig(os.Args)
+	c := config.LoadConfig(os.Args[1])
 	dnsmanager := alidns.NewAlidnsDomainManager(c)
-	for !c.DisableLoop {
-		time.Sleep(600 * time.Second)
+	for  {
 		ipaddr, err := ip.GetIp()
 		if err != nil {
 			log.Print("get ip error", err)
@@ -24,5 +23,9 @@ func main() {
 		for _, domain := range *domains {
 			domain.Update(ipaddr)
 		}
+		if c.DisableLoop {
+			break
+		}
+		time.Sleep(600 * time.Second)
 	}
 }

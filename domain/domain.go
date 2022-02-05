@@ -6,4 +6,5 @@ import (
 
 type Domain interface {
 	Update(*ip.IP) error
+	RR() string
 }

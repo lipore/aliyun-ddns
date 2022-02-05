@@ -23,8 +23,7 @@ type dnsAuth struct {
 	AppSecret string `yaml:"appSecret"`
 }
 
-func LoadConfig(args []string) *Configuration {
-	configFile := args[1]
+func LoadConfig(configFile string) *Configuration {
 
 	configReader, err := os.Open(configFile)
 	if err != nil {

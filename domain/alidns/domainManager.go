@@ -19,12 +19,9 @@ func NewAlidnsDomainManager(c *config.Configuration) *AlidnsDomainManager {
 	}
 	dm.domains = make([]domain.Domain, 0)
 
-	ipaddr, err := ip.GetIp()
-	if err != nil {
-		ipaddr = &ip.IP{
-			V4: "127.0.0.2",
-			V6: "::1",
-		}
+	ipaddr := &ip.IP{
+		V4: "127.0.0.2",
+		V6: "::1",
 	}
 	for _, record := range c.Records {
 		domainType := "A"
@@ -46,10 +43,7 @@ func (dm *AlidnsDomainManager) AddDomain(rr, domain, domainType string, ipaddr *
 	ad, err := dm.findOrCreateDomain(rr, domain, ipaddr, domainType)
 	if err != nil {
 		log.Print(err)
-	}
-	err = ad.Update(ipaddr)
-	if err != nil {
-		log.Print(err.Error())
+		return
 	}
 	dm.domains = append(dm.domains, ad)
 }

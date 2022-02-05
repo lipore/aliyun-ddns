@@ -31,6 +31,11 @@ type AlidnsDomain struct {
 	domainType           string
 }
 
+func (ad *AlidnsDomain) RR() string{
+	return ad.rr
+}
+
+
 func (ad *AlidnsDomain) Update(ip *ip.IP) error {
 	ipvalue := ipByDomainType(ip, ad.domainType)
 	client, err := createClient(ad.domainManager.appid, ad.domainManager.appSecret)
@@ -92,7 +97,6 @@ func findDomain(rr, domain, domainType string, client *alidns20150109.Client, dm
 	describeSubDomainRecordsRequest := &alidns20150109.DescribeSubDomainRecordsRequest{
 		SubDomain: tea.String(rr + "." + domain),
 	}
-	// 复制代码运行请自行打印 API 的返回值
 	domainsResp, err := client.DescribeSubDomainRecords(describeSubDomainRecordsRequest)
 	if err != nil {
 		return nil, err
@@ -113,6 +117,8 @@ func findDomain(rr, domain, domainType string, client *alidns20150109.Client, dm
 				return ad, nil
 			}
 		}
+	}else{
+		println("not found domain")
 	}
 	return nil, nil
 }

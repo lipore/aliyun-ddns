@@ -29,3 +29,40 @@ docker build -t aliyun-ddns:0.1 .
 docker run -d -v /your/config/folder:/opt/aliyun-ddns/config aliyun-ddns:0.1
 ```
 
+Run in EdgeOS with ppp ip-up.d 
+--------
+
+### Build
+```shell
+GOOS=linux GOARCH=mipsle go build -o aliyun-ddns-edgeos edgeos/main.go
+```
+
+### RUN
+
+1. Copy aliyun-ddns-edgeos to edgeRouter
+2. create config.yml in edgeRouter
+3. add run script to /config/scripts/ppp/ip-up.d/ddns.sh
+```shell
+/usr/bin/aliyun-ddns-edgeos $1 $4
+```
+
+Run in EdgeOS with task-scheduler
+--------
+
+### Build
+```shell
+GOOS=linux GOARCH=mipsle go build -o aliyun-ddns-edgeos main.go
+```
+
+### Setup task
+
+1. Copy aliyun-ddns-edgeos to edgeRouter in /config/scripts/
+2. create config.yml in edgeRouter
+3. create task 
+```
+set system task-scheduler task ddns interval 20m
+set system task-scheduler task ddns executable path /config/scripts/aliyun-ddns-edgeos
+set system task-scheduler task ddns executable arguments /config/scripts/ddns.config.yml
+commit
+save
+```
