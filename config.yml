@@ -1,6 +1,6 @@
 dnsAuth:
-  appId: LTAI5tFGdRFNqGpd6MgQZUru
-  appSecret: 7rF0cgVX4uJB5ooFon36klXEr3lIIE
+  appId: <appid>
+  appSecret: <appSecret>
 records:
   - domain: candyhouse.top
     rr:
